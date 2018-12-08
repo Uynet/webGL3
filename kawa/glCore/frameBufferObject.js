@@ -30,13 +30,12 @@ export default class FrameBufferObject{
 
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.fTexture, 0);
 
-    this.UnBind()
+    //this.UnBind()
   }
   createTexture(){
     const gl = this.gl;
     this.texture = new Texture(null);
     let texSlot = SlotManager.allocate();
-    texSlot = 10;
     gl.activeTexture(gl.TEXTURE0+texSlot);
     gl.bindTexture(gl.TEXTURE_2D,this.fTexture);
 
@@ -54,7 +53,7 @@ export default class FrameBufferObject{
     const gl = this.gl;
     gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
     gl.bindRenderbuffer(gl.RENDERBUFFER, this.depthRendererBuffer);
-    gl.bindTexture(gl.TEXTURE_2D, this.fTexture);
+    gl.bindTexture(gl.TEXTURE_2D, this.texture.textureObject);
   }
   UnBind(){
     const gl = this.gl;

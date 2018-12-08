@@ -25,7 +25,6 @@ export default class Particle{
   }
   SetUniform(gl){
     let tLoc = gl.getUniformLocation(this.shader.program, 'texture');
-    gl.bindTexture(gl.TEXTURE_2D,this.texture.textureObject);
     gl.uniform1i(tLoc,this.texture.slot);
   }
   SetAttribute(gl){
@@ -37,10 +36,12 @@ export default class Particle{
   Render(){
     const gl = Renderer.gl;
     gl.bindBuffer(gl.ARRAY_BUFFER,this.VBO);
+    gl.bindTexture(gl.TEXTURE_2D,this.texture.textureObject);
     gl.useProgram(this.shader.program);
     this.SetAttribute(gl);
     this.SetUniform(gl);
     gl.drawArrays(gl.POIINTS,0,this.vertexLength);
+    gl.bindTexture(gl.TEXTURE_2D,null);
     gl.bindBuffer(gl.ARRAY_BUFFER,null);
   }
 }

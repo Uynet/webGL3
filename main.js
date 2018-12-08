@@ -1,10 +1,12 @@
 import KAWA from "./kawa/kawasemi.js";
+import SlotManager from "./kawa/glCore/slotManager.js";
+import Timer from "./Timer.js";
 
 let kawa,stage;
 let timer;
 let r1,r2;
 let sprite
-let fbo;
+let fbo1,fbo2;
 let particle;
 
 export default class Main{
@@ -12,19 +14,20 @@ export default class Main{
     return new Promise(resolve=>{
       timer = 0;
       stage = new KAWA.Stage();
-      r1 = new KAWA.Rectangle(-1,-1,2,2);
-      stage.Add(r1);
-      r2 = new KAWA.Rectangle(0.5,-0.5,0.3,0.3);
-      stage.Add(r2);
       //let program = KAWA.ShaderProgram();
 
-      fbo = new KAWA.FrameBufferObject(128,128);
+      fbo1 = new KAWA.FrameBufferObject(128,128);
+      fbo2 = new KAWA.FrameBufferObject(128,128);
       //let texture = new KAWA.Texture("resource/img.png");
-      let texture = fbo.texture;
+      let texture = fbo1.texture;
       sprite = new KAWA.Sprite(texture,-0.5,-0.5,0.4,0.4);
       stage.Add(sprite);
-      particle = new KAWA.Particle(4*4);
+      particle = new KAWA.Particle(16*16);
       particle.SetTexture(texture);
+
+      r1 = new KAWA.Rectangle(-1,-1,2,2);
+      r1.texture = fbo1.texture;
+      stage.Add(r1);
 
       resolve();
     })
@@ -32,15 +35,24 @@ export default class Main{
   //test for only 1 drawing
   static Run(){
     requestAnimationFrame(Main.Run);
-    fbo.Bind();
+    fbo1.Bind();
     r1.Render();
-    //fbo.gl.viewport(0,0,fbo.width, fbo.height);
-    fbo.UnBind();
-    //fbo.gl.viewport(0,0,400,400);
+    //fbo1.gl.viewport(0,0,fbo.width, fbo.height);
+    fbo1.UnBind();
+    //fbo1.gl.viewport(0,0,400,400);
+    //fbo2.Bind();
+    //fbo2.UnBind();
     KAWA.Clear();
-    sprite.Render();
+    //sprite.Render();
     particle.Render();
-    timer++;
+
+    //Main.flipFBO(fbo,fbo2);
+    Timer.IncTime();
+  }
+  static flipFBO(fbo1,fbo2){
+    let tmp = fbo1;
+    fbo1 = fbo2;
+    fbo2 = tmp;
   }
 }
 
