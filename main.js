@@ -13,14 +13,15 @@ export default class Main{
       timer = 0;
       stage = new KAWA.Stage();
       r1 = new KAWA.Rectangle(-1,-1,2,2);
-      //r2 = new KAWA.Rectangle(0.5,-0.5,0.3,0.3);
       stage.Add(r1);
+      //r2 = new KAWA.Rectangle(0.5,-0.5,0.3,0.3);
       //stage.Add(r2);
       //let program = KAWA.ShaderProgram();
 
       fbo = new KAWA.FrameBufferObject(128,128);
-      let texture = new KAWA.Texture("resource/img.png");
-      sprite = new KAWA.Sprite(texture,0,0,0.4,0.4);
+      //let texture = new KAWA.Texture("resource/img.png");
+      let texture = fbo.texture;
+      sprite = new KAWA.Sprite(texture,0,-0.5,0.4,0.4);
       stage.Add(sprite);
       particle = new KAWA.Particle(4*4);
 
@@ -32,12 +33,11 @@ export default class Main{
     requestAnimationFrame(Main.Run);
     fbo.Bind();
     fbo.gl.viewport(0,0,fbo.width, fbo.height);
-    //KAWA.Render(stage);
-    //r1.x = Math.sin(timer) ;
+    r1.Render();
     fbo.UnBind();
     fbo.gl.viewport(0,0,400,400);
     KAWA.Clear();
-    KAWA.Render(stage);
+    sprite.Render();
     //particle.Render();
     timer++;
   }

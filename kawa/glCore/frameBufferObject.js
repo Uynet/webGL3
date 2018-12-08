@@ -1,4 +1,5 @@
 import Renderer from "./renderer.js";
+import Texture from "../texture.js";
 import SlotManager from "./slotManager.js";
 
 export default class FrameBufferObject{
@@ -24,18 +25,30 @@ export default class FrameBufferObject{
 
     //Texture
     this.fTexture = gl.createTexture();
+
+    this.createTexture();
+
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.fTexture, 0);
+
+    this.UnBind()
+  }
+  createTexture(){
+    const gl = this.gl;
+    this.texture = new Texture(null);
+    let texSlot = SlotManager.allocate();
+    texSlot = 10;
+    gl.activeTexture(gl.TEXTURE0+texSlot);
     gl.bindTexture(gl.TEXTURE_2D,this.fTexture);
 
     //gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.width, this.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-    const texSlot = SlotManager.allocate();
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA,this.width,this.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.generateMipmap(gl.TEXTURE_2D);
-    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.fTexture, 0);
-    gl.activeTexture(gl.TEXTURE0+texSlot);
 
-    this.UnBind()
+    this.texture.slot = texSlot;
+    this.texture.textureObject = this.fTexture;
+    this.texture.onReady = true;
   }
   Bind(){
     const gl = this.gl;

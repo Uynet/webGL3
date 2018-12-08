@@ -30,6 +30,7 @@ export default class Particle{
   }
   Render(){
     this.SetAttribute();
+    this.SetUniform();
     const gl = Renderer.gl;
     gl.bindBuffer(gl.ARRAY_BUFFER,this.VBO);
     gl.useProgram(this.shader.program);

@@ -1,5 +1,4 @@
 import Renderer from "./glCore/renderer.js";
-import SlotManager from "./glCore/slotManager.js";
 import TextureMaterial from "./Material/textureMaterial.js";
 import VBO from "./glCore/VBO.js";
 
@@ -29,15 +28,12 @@ export default class Sprite{
     this.IBOInit(this.indexData);
   }
   SetUniform(){
-    //闇
+      let texSlot = this.texture.slot;
+      texSlot = 10;
       const gl = Renderer.gl;
       gl.useProgram(this.material.program);
-      let texSlot = this.texture.slot;
-      gl.activeTexture(gl.TEXTURE0+texSlot);
-      gl.bindTexture(gl.TEXTURE_2D, this.texture.textureObject);
       let texL = gl.getUniformLocation(this.material.program, 'texture');
       gl.uniform1i(texL,texSlot);
-      gl.bindTexture(gl.TEXTURE_2D,null);
   }
   Render(){
     if(this.texture.onReady){
@@ -47,6 +43,7 @@ export default class Sprite{
       //gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(this.vertexData),gl.STATIC_DRAW);
       
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,this.IBO);
+      gl.bindTexture(gl.TEXTURE_2D, this.texture.textureObject);
       gl.useProgram(this.material.program);
       //alpha blend
       gl.enable(gl.BLEND);
@@ -56,6 +53,7 @@ export default class Sprite{
 
       gl.flush();
       gl.bindBuffer(gl.ARRAY_BUFFER,null);
+      gl.bindTexture(gl.TEXTURE_2D,null);
     }
   }
   IBOInit(data){
