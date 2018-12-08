@@ -1,4 +1,6 @@
 precision mediump float;
+uniform int po;
+
 
 void main(){
   vec2 uv = gl_FragCoord.xy/400.0;

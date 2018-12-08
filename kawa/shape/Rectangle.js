@@ -26,10 +26,11 @@ export default class Rectanlge extends Primitive{
       1,2,3
     ]
     this.IBOInit(this.indexData);
-    this.SetPositionBuffer()
+    this.AttributeInit()
   }
   Render(){
     const gl = Renderer.gl;
+    this.AttributeInit();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,this.IBO);
     gl.useProgram(this.material.program);
     gl.drawElements(gl.TRIANGLES,this.indexData.length,gl.UNSIGNED_SHORT,0);
@@ -37,7 +38,7 @@ export default class Rectanlge extends Primitive{
     gl.flush();
     gl.bindBuffer(gl.ARRAY_BUFFER,null);
   }
-  SetPositionBuffer(){
+  AttributeInit(){
     const gl = Renderer.gl;
     const program = this.material.program;
     gl.bindBuffer(gl.ARRAY_BUFFER,this.VBO);

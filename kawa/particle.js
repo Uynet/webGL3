@@ -19,21 +19,27 @@ export default class Particle{
     const frag = "kawa/Material/particle.frag";
     const vert = "kawa/Material/particle.vert";
     this.shader= new GLProgram(frag,vert,resolve);
-
   }
-  SetAttribute(){
-    const gl = Renderer.gl;
+  SetTexture(texture){
+    this.texture = texture;
+  }
+  SetUniform(gl){
+    let tLoc = gl.getUniformLocation(this.shader.program, 'texture');
+    gl.bindTexture(gl.TEXTURE_2D,this.texture.textureObject);
+    gl.uniform1i(tLoc,this.texture.slot);
+  }
+  SetAttribute(gl){
     gl.bindBuffer(gl.ARRAY_BUFFER,this.VBO);
     let loc = gl.getAttribLocation(this.shader.program, 'index');
     gl.vertexAttribPointer(loc,1,gl.FLOAT,false,0,0);
     gl.bindBuffer(gl.ARRAY_BUFFER,null);
   }
   Render(){
-    this.SetAttribute();
-    this.SetUniform();
     const gl = Renderer.gl;
     gl.bindBuffer(gl.ARRAY_BUFFER,this.VBO);
     gl.useProgram(this.shader.program);
+    this.SetAttribute(gl);
+    this.SetUniform(gl);
     gl.drawArrays(gl.POIINTS,0,this.vertexLength);
     gl.bindBuffer(gl.ARRAY_BUFFER,null);
   }
