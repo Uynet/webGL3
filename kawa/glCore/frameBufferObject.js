@@ -1,4 +1,5 @@
 import Renderer from "./renderer.js";
+import SlotManager from "./slotManager.js";
 
 export default class FrameBufferObject{
   constructor(width,height){
@@ -26,7 +27,7 @@ export default class FrameBufferObject{
     gl.bindTexture(gl.TEXTURE_2D,this.fTexture);
 
     //gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.width, this.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-    const texSlot = 10;
+    const texSlot = SlotManager.allocate();
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA,this.width,this.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);

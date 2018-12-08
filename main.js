@@ -18,10 +18,10 @@ export default class Main{
       //stage.Add(r2);
       //let program = KAWA.ShaderProgram();
 
-      //let texture = new KAWA.Texture("resource/img.png");
-      fbo = new KAWA.FrameBufferObject(256,256);
-      //sprite = new KAWA.Sprite(texture,0,0,0.4,0.4);
-      //stage.Add(sprite);
+      fbo = new KAWA.FrameBufferObject(128,128);
+      let texture = new KAWA.Texture("resource/img.png");
+      sprite = new KAWA.Sprite(texture,0,0,0.4,0.4);
+      stage.Add(sprite);
       particle = new KAWA.Particle(4*4);
 
       resolve();
@@ -31,13 +31,14 @@ export default class Main{
   static Run(){
     requestAnimationFrame(Main.Run);
     fbo.Bind();
-    //fbo.gl.viewport(0,0,fbo.width, fbo.height);
+    fbo.gl.viewport(0,0,fbo.width, fbo.height);
     //KAWA.Render(stage);
     //r1.x = Math.sin(timer) ;
-    KAWA.Render(stage);
     fbo.UnBind();
+    fbo.gl.viewport(0,0,400,400);
     KAWA.Clear();
-    particle.Render();
+    KAWA.Render(stage);
+    //particle.Render();
     timer++;
   }
 }

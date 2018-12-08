@@ -1,10 +1,12 @@
 import Renderer from "./glCore/renderer.js";
+import SlotManager from "./glCore/slotManager.js";
 
 export default class Texture {
   constructor(path){
     const gl = Renderer.gl;
     let img = new Image;
     this.onReady = false;
+    this.slot = SlotManager.allocate();
     img.onload = ()=>{
       this.onReady = true;
       this.textureObject = gl.createTexture();

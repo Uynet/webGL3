@@ -1,4 +1,5 @@
 import Renderer from "./glCore/renderer.js";
+import SlotManager from "./glCore/slotManager.js";
 import TextureMaterial from "./Material/textureMaterial.js";
 import VBO from "./glCore/VBO.js";
 
@@ -29,14 +30,12 @@ export default class Sprite{
   }
   SetUniform(){
     //闇
-      let texSlot = 0;
       const gl = Renderer.gl;
       gl.useProgram(this.material.program);
-      texSlot = 10;
+      let texSlot = this.texture.slot;
       gl.activeTexture(gl.TEXTURE0+texSlot);
       gl.bindTexture(gl.TEXTURE_2D, this.texture.textureObject);
       let texL = gl.getUniformLocation(this.material.program, 'texture');
-      texSlot = 0;
       gl.uniform1i(texL,texSlot);
       gl.bindTexture(gl.TEXTURE_2D,null);
   }
