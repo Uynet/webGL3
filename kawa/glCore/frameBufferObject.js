@@ -1,6 +1,7 @@
 import Renderer from "./renderer.js";
 import Texture from "../texture.js";
 import SlotManager from "./slotManager.js";
+import FrameBufferManager from "./frameBufferManager.js";
 
 export default class FrameBufferObject{
   constructor(width,height){
@@ -10,6 +11,9 @@ export default class FrameBufferObject{
     this.width = width;
     this.height = height;
     this.createBuffer();
+  }
+  GetColorBufferSlot(){
+    return this.texture.slot;
   }
   createBuffer(){
     const gl = this.gl;
@@ -29,6 +33,7 @@ export default class FrameBufferObject{
     this.createTexture();
 
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.fTexture, 0);
+    FrameBufferManager.SetCurrentFBO(this);
 
     //this.UnBind()
   }
@@ -51,12 +56,14 @@ export default class FrameBufferObject{
   }
   Bind(){
     const gl = this.gl;
+    FrameBufferManager.SetCurrentFBO(this);
     gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
     gl.bindRenderbuffer(gl.RENDERBUFFER, this.depthRendererBuffer);
     gl.bindTexture(gl.TEXTURE_2D, this.texture.textureObject);
   }
   UnBind(){
     const gl = this.gl;
+    FrameBufferManager.SetCurrentFBO(null);
     gl.bindTexture(gl.TEXTURE_2D, null);
     gl.bindRenderbuffer(gl.RENDERBUFFER, null);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);

@@ -1,4 +1,5 @@
 import kawa from "../kawasemi.js";
+import FrameBufferManager from "../glCore/frameBufferManager.js";
 import Renderer from "../glCore/renderer.js";
 import Primitive from "./Primitive.js";
 import FlatMaterial from "../Material/flatMaterial.js";
@@ -21,6 +22,7 @@ export default class Rectanlge extends Primitive{
       x+w , y+h , 0,
     ]
     this.material = FlatMaterial;
+    this.program = this.material.program;
     this.VBOInit(this.vertexData);
     this.indexData = [
       0,1,2,
@@ -29,29 +31,31 @@ export default class Rectanlge extends Primitive{
     this.IBOInit(this.indexData);
     this.AttributeInit()
   }
-  Render(){
+  Render(fbo){
     const gl = Renderer.gl;
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,this.IBO);
-    gl.useProgram(this.material.program);
+    gl.bindTexture(gl.TEXTURE_2D,fbo.texture.textureObject);
+    gl.useProgram(this.program);
     this.AttributeInit();
-    this.SetUniform();
+    this.SetUniform(fbo);
+
     gl.drawElements(gl.TRIANGLES,this.indexData.length,gl.UNSIGNED_SHORT,0);
+
+    gl.bindTexture(gl.TEXTURE_2D,null);
     gl.bindBuffer(gl.ARRAY_BUFFER,null);
   }
-  SetUniform(){
+  SetUniform(fbo){
+    //cl(fbo.texture.slot);
     const gl = Renderer.gl;
-    let loc = gl.getUniformLocation(this.material.program ,"timer");
+    let loc = gl.getUniformLocation(this.program ,"timer");
     gl.uniform1f(loc , Timer.GetTime());
-    /*
-    gl.bindTexture(gl.TEXTURE_2D,this.texture.textureObject);
-    let tLoc = gl.getUniformLocation(this.material.program ,"texture");
-    gl.uniform1i(tLoc,this.texture.slot);
-    gl.bindTexture(gl.TEXTURE_2D,null);
-    */
+    //let  = FrameBufferManager.GetCurrentFBO().GetColorBufferSlot();
+    let tLoc = gl.getUniformLocation(this.program ,"texture");
+    gl.uniform1i(tLoc,fbo.texture.slot);
   };
   AttributeInit(){
     const gl = Renderer.gl;
-    const program = this.material.program;
+    const program = this.program;
     gl.bindBuffer(gl.ARRAY_BUFFER,this.VBO);
     const attr = gl.getAttribLocation(program,"position");
     gl.enableVertexAttribArray(attr);
