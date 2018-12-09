@@ -14,6 +14,15 @@ export default class Renderer{
     if(this.gl==null){
       console.error("webGL対応してないよ")
     }
+    const gl = this.gl;
+    var ext;
+    ext = this.gl.getExtension('OES_texture_float');
+    if(ext == null){
+      alert('float texture not supported');
+      return;
+    }
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
   }
   static GetGL(){
     return this.gl;

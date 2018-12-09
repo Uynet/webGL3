@@ -46,8 +46,6 @@ export default class Sprite{
       gl.bindTexture(gl.TEXTURE_2D, this.texture.textureObject);
       gl.useProgram(this.material.program);
       //alpha blend
-      gl.enable(gl.BLEND);
-      gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
 
       gl.drawElements(gl.TRIANGLES,this.indexData.length,gl.UNSIGNED_SHORT,0);
 

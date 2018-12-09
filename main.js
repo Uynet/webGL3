@@ -24,7 +24,7 @@ export default class Main{
       let texture = frontFBO.texture;
       sprite = new KAWA.Sprite(texture,-0.5,-0.5,0.4,0.4);
       stage.Add(sprite);
-      particle = new KAWA.Particle(16*16);
+      particle = new KAWA.Particle(32*32);
       particle.SetTexture(texture);
 
       r1 = new KAWA.Rectangle(-1,-1,2,2);

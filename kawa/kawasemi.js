@@ -41,7 +41,7 @@ export default class KAWA{
   }
   static Clear(){
     const gl = this.Renderer.gl;
-    gl.clearColor(0,0,0,1);
+    gl.clearColor(155/256,155/256,175/256,1);
     gl.clear(gl.COLOR_BUFFER_BIT);
   }
   getFrameBufferTexture(){
