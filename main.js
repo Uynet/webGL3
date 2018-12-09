@@ -9,6 +9,7 @@ let timer;
 let r1,r2;
 let sprite
 let frontFBO,backFBO;
+let postFBO;
 let particle;
 
 export default class Main{
@@ -20,6 +21,7 @@ export default class Main{
 
       frontFBO = new KAWA.FrameBufferObject(128,128);
       backFBO = new KAWA.FrameBufferObject(128,128);
+      postFBO = new KAWA.FrameBufferObject(400,400);
       //let texture = new KAWA.Texture("resource/img.png");
       let texture = frontFBO.texture;
       sprite = new KAWA.Sprite(texture,-0.5,-0.5,0.4,0.4);

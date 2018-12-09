@@ -1,8 +1,8 @@
 precision mediump float;
 uniform int po;
 
-float near = 5.;
-float far = 50.;
+float near = 2.;
+float far = 45.;
 float FOV = 3.14159/2.;
 float asp = 1.;
 
@@ -17,5 +17,5 @@ void main(){
   float y = screen*(rand(-uv+vec2(1))-0.5);
   float z = -near - (far - near)*rand(uv.yx);
   vec3 pos = vec3(x,y,z);
-  gl_FragColor = vec4(pos,1);
+  gl_FragColor = vec4(pos,1.);
 }
